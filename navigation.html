@@ -180,8 +180,8 @@
 			if (res.entities) {
 				res.entities.forEach(function(e) {
 					if (e.class.indexOf('image') > -1) {
-						this.logoText = e.properties.alt;
 						if (e.properties) {
+							this.logoText = e.properties.alt;
 							if (e.properties.homeRelativePath) {
 								this.logoHref = e.properties.homeRelativePath;
 							}
