@@ -6,7 +6,7 @@
 			:host {
 				display: inline-block;
 			}
-			:host > a {
+			:host .d2l-navigation-logo-link {
 				display: inline-block;
 			}
 			:host img {
@@ -28,7 +28,7 @@
 		</style>
 		<div class="d2l-navigation-logo-wrapper">
 			<template is="dom-if" if="{{hasLink}}">
-				<a href$="[[href]]" title="[[text]]">
+				<a href$="[[href]]" title="[[text]]" class="d2l-navigation-logo-link">
 					<img src$="[[src]]" alt="[[text]]" />
 				</a>
 			</template>
