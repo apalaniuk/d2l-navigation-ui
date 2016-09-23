@@ -1,29 +1,21 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../d2l-colors/d2l-colors.html">
+<link rel="import" href="../d2l-icons/d2l-icons.html">
 <link rel="import" href="../d2l-offscreen/d2l-offscreen.html">
 <link rel="import" href="button-highlight-styles.html">
 <dom-module id="d2l-navigation-button-highlight-icon">
-	<style include="d2l-navigation-button-highlight-styles">
+	<style include="d2l-navigation-button-highlight-styles d2l-colors">
 		:host {
 			@apply(--d2l-navigation-button-highlight);
 		}
 		:host(:hover), :host(:focus) {
 			@apply(--d2l-navigation-button-highlight-hover);
 		}
-		:host([active]) {
-			@apply(--d2l-navigation-button-highlight-active);
+		:host(:hover) d2l-icon, :host(:focus) d2l-icon {
+			color: var(--d2l-color-celestuba);
 		}
-		:host([icon*='navigation-t1']) .d2l-navigation-button-highlight-icn {
-			height: 18px;
-			width: 18px;
-		}
-		:host([icon*='navigation-t2']) .d2l-navigation-button-highlight-icn {
-			height: 24px;
-			width: 24px;
-		}
-		:host([icon*='navigation-t3']) .d2l-navigation-button-highlight-icn {
-			height: 30px;
-			width: 30px;
+		:host([active]) d2l-icon {
+			color: var(--d2l-color-celestine);
 		}
 		.d2l-navigation-button-highlight-bar {
 			@apply(--d2l-navigation-button-highlight-bar);
@@ -38,7 +30,7 @@
 	</style>
 	<template>
 		<span class="d2l-navigation-button-highlight-bar"></span>
-		<iron-icon icon="[[icon]]" class="d2l-navigation-button-highlight-icn"></iron-icon>
+		<d2l-icon icon="[[icon]]" class="d2l-navigation-button-highlight-icn"></d2l-icon>
 		<d2l-offscreen>[[text]]</d2l-offscreen>
 		<content></content>
 	</template>
