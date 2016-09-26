@@ -91,6 +91,10 @@
 		is: 'd2l-navigation-mobile-menu',
 
 		properties: {
+			adminItems: {
+				type: Array,
+				observer: '_adminItemsChanged'
+			},
 			bandColor: {
 				type: String,
 				value: '#b9c2d0',
@@ -143,6 +147,33 @@
 			this._handleLoadCourseMenu();
 		},
 
+		_adminItemsChanged: function() {
+
+			var itemsData = this.adminItems;
+			if (!itemsData || itemsData.length === 0 || !itemsData[0].entities || itemsData[0].entities.length === 0) {
+				return;
+			}
+
+			var toolsItem = document.createElement('d2l-menu-item');
+			toolsItem.setAttribute('text', this.localize('adminTools'));
+			toolsItem.classList.add('d2l-navigation-mobile-admin-tools');
+
+			var toolsMenu = document.createElement('d2l-menu');
+			Polymer.dom(toolsItem).appendChild(toolsMenu);
+
+			itemsData = itemsData[0].entities;
+			var toolsMenuApi = Polymer.dom(toolsMenu);
+			itemsData.forEach(function(itemData) {
+				var item = this.createMenuItem(itemData);
+				if (item) {
+					toolsMenuApi.appendChild(item);
+				}
+			}.bind(this));
+
+			Polymer.dom(this.$$('d2l-menu')).appendChild(toolsItem);
+
+		},
+
 		_hasCourseMenu: function(courseMenuLocation) {
 			return courseMenuLocation !== undefined;
 		},
@@ -189,6 +220,7 @@
 		},
 
 		_itemsChanged: function() {
+
 			var menuItems = document.createDocumentFragment();
 
 			this.items.forEach(function(item) {
@@ -199,7 +231,15 @@
 				}
 			}.bind(this));
 
-			Polymer.dom(this.$$('d2l-menu')).appendChild(menuItems);
+			var menu = this.$$('d2l-menu');
+			var adminItem = menu.queryEffectiveChildren('.d2l-navigation-mobile-admin-tools');
+
+			if (adminItem) {
+				Polymer.dom(menu).insertBefore(menuItems, adminItem);
+			} else {
+				Polymer.dom(menu).appendChild(menuItems);
+			}
+
 		}
 
 	});

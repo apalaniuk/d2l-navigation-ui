@@ -35,6 +35,7 @@
 			on-iron-ajax-error="_onError"
 			on-iron-ajax-response="_onThemeResponse"></d2l-ajax>
 		<d2l-navigation-resolved
+			admin-items="[[adminItems]]"
 			admin-menu-location="[[adminMenuLocation]]"
 			band-color="[[themeColor]]"
 			course-menu-location="[[courseMenuLocation]]"
@@ -59,6 +60,10 @@
 		],
 		properties: {
 			adminMenuLocation: String,
+			adminItems: {
+				type: Array,
+				value: []
+			},
 			courseMenuLocation: String,
 			delay: {
 				type: Number,
@@ -70,7 +75,6 @@
 				value: false
 			},
 			href: String,
-			userHref: String,
 			hasAdminMenu: {
 				type: Boolean,
 				value: false
@@ -80,32 +84,33 @@
 				type: Boolean,
 				value: false
 			},
-			logo: String,
-			logoHref: String,
-			logoText: String,
+			items: {
+				type: Array,
+				value: []
+			},
 			loading: {
 				reflectToAttribute: true,
 				type: Boolean,
 				value: false
-			},
-			items: {
-				type: Array,
-				value: []
 			},
 			loadState: {
 				type: String,
 				value: 'loading',
 				observer: '_onLoadStateChange'
 			},
+			logo: String,
+			logoHref: String,
+			logoText: String,
 			myHome: String,
 			notifications: Array,
 			orgUnitName: String,
 			orgUnitHome: String,
 			personalMenuLocation: String,
+			profileDisplayName: String,
+			profileThumbnailSrc: String,
 			showIncomplete: Boolean,
 			themeColor: String,
-			profileDisplayName: String,
-			profileThumbnailSrc: String
+			userHref: String
 		},
 		ready: function() {
 			var val = this.isDuplicate();
@@ -153,17 +158,21 @@
 			}
 
 			this.splice('items', 0, this.items.length);
+
 			if (res.entities) {
+				var adminItems = [];
 				var newItems = [];
 				res.entities.forEach(function(e) {
 					if (e.class.indexOf('admin') > -1) {
 						if (this.adminMenuLocation !== undefined) {
 							this.hasAdminMenu = true;
 						}
+						adminItems.push(e);
 					} else if (e.class.indexOf('item') > -1) {
 						newItems.push(e);
 					}
 				}.bind(this));
+				this.adminItems = adminItems;
 				this.items = newItems;
 			}
 
