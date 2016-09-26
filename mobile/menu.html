@@ -156,12 +156,12 @@
 
 			var toolsItem = document.createElement('d2l-menu-item');
 			toolsItem.setAttribute('text', this.localize('adminTools'));
-			toolsItem.classList.add('d2l-navigation-mobile-admin-tools')
+			toolsItem.classList.add('d2l-navigation-mobile-admin-tools');
 
 			var toolsMenu = document.createElement('d2l-menu');
 			Polymer.dom(toolsItem).appendChild(toolsMenu);
 
-			var itemsData = itemsData[0].entities;
+			itemsData = itemsData[0].entities;
 			var toolsMenuApi = Polymer.dom(toolsMenu);
 			itemsData.forEach(function(itemData) {
 				var item = this.createMenuItem(itemData);
@@ -235,7 +235,7 @@
 			var adminItem = menu.queryEffectiveChildren('.d2l-navigation-mobile-admin-tools');
 
 			if (adminItem) {
-				Polymer.dom(menu).insertBefore(menuItems, adminItem)
+				Polymer.dom(menu).insertBefore(menuItems, adminItem);
 			} else {
 				Polymer.dom(menu).appendChild(menuItems);
 			}
