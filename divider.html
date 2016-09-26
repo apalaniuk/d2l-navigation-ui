@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../d2l-colors/d2l-colors.html">
-<link rel="import" href="icons.html">
+<link rel="import" href="../d2l-icons/d2l-icons.html">
 <dom-module id="d2l-navigation-divider">
 	<style include="d2l-colors">
 		:host {
@@ -10,38 +9,20 @@
 			-webkit-flex: 0 0 auto;
 			flex: 0 0 auto;
 		}
-		:host([small]) iron-icon {
-			margin: 0 3px;
-		}
-		iron-icon {
+		d2l-icon {
 			color: var(--d2l-color-titanius);
-			height: 24px;
 			margin: 0 9px;
-			width: 24px;
 		}
-		:host([no-margin]) iron-icon {
+		:host([no-margin]) d2l-icon {
 			margin: 0;
 		}
 	</style>
 	<template>
-		<iron-icon icon="{{computeIcon(small)}}"></iron-icon>
+		<d2l-icon icon="d2l-tier2:divider-big"></d2l-icon>
 	</template>
 </dom-module>
 <script>
 	Polymer({
-		is: 'd2l-navigation-divider',
-		properties: {
-			icon2: {
-				type: String,
-				computed: 'computeIcon(small)'
-			},
-			small: {
-				type: Boolean,
-				value: false
-			}
-		},
-		computeIcon: function(small) {
-			return small ? 'navigation-t2:divider-small' : 'navigation-t2:divider';
-		}
+		is: 'd2l-navigation-divider'
 	});
 </script>
