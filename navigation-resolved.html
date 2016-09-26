@@ -28,6 +28,7 @@
 			<d2l-navigation-main
 				items="[[items]]"></d2l-navigation-main>
 			<d2l-navigation-mobile-menu
+				admin-items="[[adminItems]]"
 				band-color="[[bandColor]]"
 				course-menu-location="[[courseMenuLocation]]"
 				items="[[items]]"
@@ -44,6 +45,7 @@
 	Polymer({
 		is: 'd2l-navigation-resolved',
 		properties: {
+			adminItems: Array,
 			adminMenuLocation: String,
 			bandColor: String,
 			courseMenuLocation: String,
@@ -60,8 +62,8 @@
 			notifications: Array,
 			orgUnitHome: String,
 			orgUnitName: String,
-			userHref: String,
-			personalMenuLocation: String
+			personalMenuLocation: String,
+			userHref: String
 		},
 		listeners: {
 			'd2l-navigation-open-menu': 'openMenu',
