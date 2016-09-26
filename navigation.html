@@ -70,7 +70,6 @@
 				value: false
 			},
 			href: String,
-			userHref: String,
 			hasAdminMenu: {
 				type: Boolean,
 				value: false
@@ -80,32 +79,33 @@
 				type: Boolean,
 				value: false
 			},
-			logo: String,
-			logoHref: String,
-			logoText: String,
+			items: {
+				type: Array,
+				value: []
+			},
 			loading: {
 				reflectToAttribute: true,
 				type: Boolean,
 				value: false
-			},
-			items: {
-				type: Array,
-				value: []
 			},
 			loadState: {
 				type: String,
 				value: 'loading',
 				observer: '_onLoadStateChange'
 			},
+			logo: String,
+			logoHref: String,
+			logoText: String,
 			myHome: String,
 			notifications: Array,
 			orgUnitName: String,
 			orgUnitHome: String,
 			personalMenuLocation: String,
+			profileDisplayName: String,
+			profileThumbnailSrc: String,
 			showIncomplete: Boolean,
 			themeColor: String,
-			profileDisplayName: String,
-			profileThumbnailSrc: String
+			userHref: String
 		},
 		ready: function() {
 			var val = this.isDuplicate();
