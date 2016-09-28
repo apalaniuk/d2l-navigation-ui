@@ -150,7 +150,7 @@
 		_adminItemsChanged: function() {
 
 			var itemsData = this.adminItems;
-			if (!itemsData || itemsData.length === 0 || !itemsData[0].entities || itemsData[0].entities.length === 0) {
+			if (!itemsData || itemsData.length === 0) {
 				return;
 			}
 
@@ -161,9 +161,11 @@
 			var toolsMenu = document.createElement('d2l-menu');
 			Polymer.dom(toolsItem).appendChild(toolsMenu);
 
-			itemsData = itemsData[0].entities;
 			var toolsMenuApi = Polymer.dom(toolsMenu);
 			itemsData.forEach(function(itemData) {
+				if (!itemData.entities || itemData.entities.length === 0) {
+					return;
+				}
 				var item = this.createMenuItem(itemData);
 				if (item) {
 					toolsMenuApi.appendChild(item);
