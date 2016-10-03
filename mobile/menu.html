@@ -156,7 +156,6 @@
 
 			var toolsItem = document.createElement('d2l-menu-item');
 			toolsItem.setAttribute('text', this.localize('adminTools'));
-			toolsItem.classList.add('d2l-navigation-mobile-admin-tools');
 
 			var toolsMenu = document.createElement('d2l-menu');
 			Polymer.dom(toolsItem).appendChild(toolsMenu);
@@ -172,7 +171,13 @@
 				}
 			}.bind(this));
 
-			Polymer.dom(this.$$('d2l-menu')).appendChild(toolsItem);
+			var menu = this.$$('d2l-menu');
+
+			var separator = document.createElement('d2l-menu-item-separator');
+			separator.classList.add('d2l-navigation-mobile-admin-tools-sep');
+			Polymer.dom(menu).appendChild(separator);
+
+			Polymer.dom(menu).appendChild(toolsItem);
 
 		},
 
@@ -234,7 +239,7 @@
 			}.bind(this));
 
 			var menu = this.$$('d2l-menu');
-			var adminItem = menu.queryEffectiveChildren('.d2l-navigation-mobile-admin-tools');
+			var adminItem = menu.queryEffectiveChildren('.d2l-navigation-mobile-admin-tools-sep');
 
 			if (adminItem) {
 				Polymer.dom(menu).insertBefore(menuItems, adminItem);
