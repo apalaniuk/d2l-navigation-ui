@@ -83,7 +83,7 @@
 		_createAction: function(item) {
 			var action = document.createElement('d2l-menu-item');
 			action.setAttribute('text', this.getText(item));
-			action.addEventListener('select', this._onPopupOrActionSelect.bind(this, item));
+			action.addEventListener('d2l-menu-item-select', this._onPopupOrActionSelect.bind(this, item));
 			return action;
 		},
 
@@ -117,7 +117,7 @@
 			popup.setAttribute('text', this.getText(item));
 			popup.setAttribute('href', this.getHref(item));
 			popup.setAttribute('prevent-default', 'prevent-default');
-			popup.addEventListener('select', this._onPopupOrActionSelect.bind(this, item));
+			popup.addEventListener('d2l-menu-item-select', this._onPopupOrActionSelect.bind(this, item));
 			return popup;
 		},
 
