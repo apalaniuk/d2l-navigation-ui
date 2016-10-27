@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-performance/d2l-performance.html">
 <link rel="import" href="../d2l-ajax/d2l-ajax.html">
 <link rel="import" href="../d2l-page-load-progress/d2l-page-load-progress.html">
 <link rel="import" href="navigation-resolved.html">
@@ -115,6 +116,7 @@
 			userHref: String
 		},
 		ready: function() {
+			D2L.Performance.mark('d2l.navigation.ready');
 			var val = this.isSuppressed() || this.isDuplicate();
 			if (val) {
 				this.setAttribute('suppressed', 'suppressed');
@@ -135,6 +137,8 @@
 
 			var delay = Math.max(200, this.delay);
 			this.async(function() {
+				D2L.Performance.mark('d2l.navigation.loaded');
+				D2L.Performance.measure('d2l.navigation', 'd2l.navigation.ready', 'd2l.navigation.loaded');
 				this.$$('d2l-page-load-progress').finish();
 				this.fire('d2l-navigation-ready');
 				this.loading = false;
