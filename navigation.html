@@ -138,7 +138,7 @@
 			var delay = Math.max(200, this.delay);
 			this.async(function() {
 				D2L.Performance.mark('d2l.navigation.loaded');
-				D2L.Performance.measure('d2l.navigation','d2l.navigation.ready', 'd2l.navigation.loaded');
+				D2L.Performance.measure('d2l.navigation', 'd2l.navigation.ready', 'd2l.navigation.loaded');
 				this.$$('d2l-page-load-progress').finish();
 				this.fire('d2l-navigation-ready');
 				this.loading = false;
