@@ -68,10 +68,6 @@
 				value: []
 			},
 			courseMenuLocation: String,
-			delay: {
-				type: Number,
-				value: 200
-			},
 			suppressed: {
 				reflectToAttribute: true,
 				type: Boolean,
@@ -135,14 +131,13 @@
 				return;
 			}
 
-			var delay = Math.max(200, this.delay);
 			this.async(function() {
 				D2L.Performance.mark('d2l.navigation.loaded');
 				D2L.Performance.measure('d2l.navigation', 'd2l.navigation.ready', 'd2l.navigation.loaded');
 				this.$$('d2l-page-load-progress').finish();
 				this.fire('d2l-navigation-ready');
 				this.loading = false;
-			}.bind(this), delay);
+			}.bind(this), 0);
 
 		},
 		_onNavResponse: function(evt) {
