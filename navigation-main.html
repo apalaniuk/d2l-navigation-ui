@@ -141,17 +141,18 @@
 			Polymer.dom(navItem).node.style.display = 'none';
 		},
 		_handleDomChange: function() {
-			this.async(function() {
-				this._navItems = Polymer.dom(this.root).querySelectorAll(
-					'd2l-navigation-item-link,d2l-navigation-item-group'
-				);
-				if (this._navItems.length > 0) {
-					var me = this;
-					setTimeout(function() {
-						me._chomp();
-					}, 20); // Firefox seems to need a few extra ms
-				}
-			});
+			if (this.items.length) {
+				this.async(function() {
+					this._navItems = Polymer.dom(this.root).querySelectorAll(
+						'd2l-navigation-item-link,d2l-navigation-item-group'
+					);
+					if (this._navItems.length > 0) {
+						setTimeout(function() {
+							this._chomp();
+						}.bind(this), 100); // hackily ensuring DOM is ready to determine row positions
+					}
+				});
+			}
 		},
 		_handleMoreGroupFocusedItemHidden: function(event, details) {
 			this._focusItem(details.index);
