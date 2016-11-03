@@ -106,11 +106,8 @@
 
 			this._showMainGroup();
 			var index = navItemsLength - 1;
-			if (index < 0) {
-				return; // shouldn't happen but being sure
-			}
 
-			while (!this._isOnFirstRow(this._moreGroup)) {
+			while ((index >= 0) && (!this._isOnFirstRow(this._moreGroup))) {
 				this._hideItem(navItems[index]);
 				index--;
 			}
