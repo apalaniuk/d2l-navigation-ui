@@ -87,7 +87,7 @@
 
 			Polymer.dom(this).node.removeAttribute('justify-content');
 
-			if (navItemsLength === 0) {
+			if (!navItemsLength) {
 				this._hideMainGroup();
 				return;
 			}
@@ -106,7 +106,8 @@
 
 			this._showMainGroup();
 			var index = navItemsLength - 1;
-			while (!this._isOnFirstRow(this._moreGroup)) {
+
+			while ((index >= 0) && (!this._isOnFirstRow(this._moreGroup))) {
 				this._hideItem(navItems[index]);
 				index--;
 			}
@@ -141,15 +142,17 @@
 			Polymer.dom(navItem).node.style.display = 'none';
 		},
 		_handleDomChange: function() {
+			if (!this.items.length) {
+				return;
+			}
 			this.async(function() {
 				this._navItems = Polymer.dom(this.root).querySelectorAll(
 					'd2l-navigation-item-link,d2l-navigation-item-group'
 				);
 				if (this._navItems.length > 0) {
-					var me = this;
 					setTimeout(function() {
-						me._chomp();
-					}, 20); // Firefox seems to need a few extra ms
+						this._chomp();
+					}.bind(this), 100); // hackily ensuring DOM is ready to determine row positions
 				}
 			});
 		},
