@@ -5,6 +5,7 @@
 <link rel="import" href="item-group.html">
 <link rel="import" href="item-link-behavior.html">
 <link rel="import" href="more-group.html">
+<link rel="import" href="../d2l-offscreen/d2l-offscreen.html">
 <dom-module id="d2l-navigation-main">
 	<style include="d2l-colors">
 		:host {
@@ -47,7 +48,7 @@
 						<d2l-navigation-item-link item="[[item]]"></d2l-navigation-item-link>
 					</template>
 				</template>
-				<d2l-navigation-more-group items="[[items]]"></d2l-navigation-more-group>
+				<d2l-navigation-more-group items="[[items]]" aria-hidden="true"></d2l-navigation-more-group>
 			</div>
 		</d2l-navigation-centerer>
 	</template>
@@ -138,7 +139,18 @@
 			if (navItem.isFocused()) {
 				this._moreGroup.focus();
 			}
-			Polymer.dom(navItem).node.style.display = 'none';
+			var offscreen = document.createElement("d2l-offscreen");
+			navItem.parentNode.insertBefore(offscreen, navItem);
+			navItem.parentNode.removeChild(navItem);
+			offscreen.innerHTML = navItem.innerHTML;
+			if (offscreen.children[0].tagName === 'A'){
+				offscreen.children[0].setAttribute('tabindex', '-1');
+			}else if (offscreen.children[0].tagName === 'D2L-DROPDOWN'){
+				var buttons = offscreen.getElementsByTagName("button");
+				for (var i = 0; i < buttons.length; i++) {
+					buttons[i].setAttribute('tabindex', '-1');
+				}
+			}
 		},
 		_handleDomChange: function() {
 			this.async(function() {
