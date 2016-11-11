@@ -27,17 +27,19 @@
 				personal-menu-location="[[personalMenuLocation]]"></d2l-navigation-header>
 			<d2l-navigation-main
 				items="[[items]]"></d2l-navigation-main>
-			<d2l-navigation-mobile-menu
-				admin-items="[[adminItems]]"
-				band-color="[[bandColor]]"
-				course-menu-location="[[courseMenuLocation]]"
-				items="[[items]]"
-				logo="[[logo]]"
-				logo-href="[[logoHref]]"
-				logo-text="[[logoText]]"
-				my-home="[[myHome]]"
-				org-unit-home="[[orgUnitHome]]"
-				org-unit-name="[[orgUnitName]]"></d2l-navigation-mobile-menu>
+			<template id="mobileMenuTemplate" is="dom-if" if="[[renderMobileMenu]]">
+				<d2l-navigation-mobile-menu
+					admin-items="[[adminItems]]"
+					band-color="[[bandColor]]"
+					course-menu-location="[[courseMenuLocation]]"
+					items="[[items]]"
+					logo="[[logo]]"
+					logo-href="[[logoHref]]"
+					logo-text="[[logoText]]"
+					my-home="[[myHome]]"
+					org-unit-home="[[orgUnitHome]]"
+					org-unit-name="[[orgUnitName]]"></d2l-navigation-mobile-menu>
+			</template>
 		</nav>
 	</template>
 </dom-module>
@@ -63,6 +65,10 @@
 			orgUnitHome: String,
 			orgUnitName: String,
 			personalMenuLocation: String,
+			renderMobileMenu: {
+				type: Boolean,
+				value: false
+			},
 			userHref: String
 		},
 		listeners: {
@@ -70,6 +76,10 @@
 			'_focus': '_handleFocus'
 		},
 		openMenu: function(e) {
+			if (!this.renderMobileMenu) {
+				this.renderMobileMenu = true;
+				this.$$('#mobileMenuTemplate').render();
+			}
 			this.$$('d2l-navigation-mobile-menu').open(e.detail.opener);
 		},
 		_handleFocus: function() {
