@@ -137,19 +137,23 @@
 			this._navItems.forEach(function(navItem) {
 				Polymer.dom(navItem).node.style.display = 'inline-block';
 				Polymer.dom(navItem).node.removeAttribute("nav-item-d2l-offscreen");
-			});
+				this._setNavItemTabIndex(navItem, 0);
+			}.bind(this));
 		},
 		_hideItem: function(navItem) {
 			if (navItem.isFocused()) {
 				this._moreGroup.focus();
 			}
 			Polymer.dom(navItem).node.setAttribute('nav-item-d2l-offscreen', '');
+			this._setNavItemTabIndex(navItem, -1);
+		},
+		_setNavItemTabIndex: function(navItem, tabIndex) {
 			if (navItem.children[0].tagName === 'A'){
-				navItem.children[0].setAttribute('tabindex', '-1');
+				navItem.children[0].setAttribute('tabindex', '' + tabIndex);
 			}else if (navItem.children[0].tagName === 'D2L-DROPDOWN'){
 				var buttons = navItem.getElementsByTagName("button");
 				for (var i = 0; i < buttons.length; i++) {
-					buttons[i].setAttribute('tabindex', '-1');
+					buttons[i].setAttribute('tabindex', '' + tabIndex);
 				}
 			}
 		},
