@@ -1,13 +1,13 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../d2l-colors/d2l-colors.html">
+<link rel="import" href="../d2l-offscreen/d2l-offscreen-shared-styles.html">
 <link rel="import" href="centerer.html">
 <link rel="import" href="item-link.html">
 <link rel="import" href="item-group.html">
 <link rel="import" href="item-link-behavior.html">
 <link rel="import" href="more-group.html">
-<link rel="import" href="../d2l-offscreen/d2l-offscreen.html">
 <dom-module id="d2l-navigation-main">
-	<style include="d2l-colors">
+	<style include="d2l-colors d2l-offscreen-shared-styles">
 		:host {
 			border-bottom: 1px solid var(--d2l-color-gypsum);
 			display: none;
@@ -30,6 +30,9 @@
 			-webkit-flex-wrap: nowrap;
 			-ms-flex-wrap: nowrap;
 			flex-wrap: nowrap;
+		}
+		[nav-item-d2l-offscreen] {
+			@apply(--d2l-offscreen);
 		}
 		@media(max-width: 992px) {
 			:host, :host([has-items]) {
@@ -133,20 +136,18 @@
 		_showAllItems: function() {
 			this._navItems.forEach(function(navItem) {
 				Polymer.dom(navItem).node.style.display = 'inline-block';
+				Polymer.dom(navItem).node.removeAttribute("nav-item-d2l-offscreen");
 			});
 		},
 		_hideItem: function(navItem) {
 			if (navItem.isFocused()) {
 				this._moreGroup.focus();
 			}
-			var offscreen = document.createElement("d2l-offscreen");
-			navItem.parentNode.insertBefore(offscreen, navItem);
-			navItem.parentNode.removeChild(navItem);
-			offscreen.innerHTML = navItem.innerHTML;
-			if (offscreen.children[0].tagName === 'A'){
-				offscreen.children[0].setAttribute('tabindex', '-1');
-			}else if (offscreen.children[0].tagName === 'D2L-DROPDOWN'){
-				var buttons = offscreen.getElementsByTagName("button");
+			Polymer.dom(navItem).node.setAttribute('nav-item-d2l-offscreen', '');
+			if (navItem.children[0].tagName === 'A'){
+				navItem.children[0].setAttribute('tabindex', '-1');
+			}else if (navItem.children[0].tagName === 'D2L-DROPDOWN'){
+				var buttons = navItem.getElementsByTagName("button");
 				for (var i = 0; i < buttons.length; i++) {
 					buttons[i].setAttribute('tabindex', '-1');
 				}
