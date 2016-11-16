@@ -44,7 +44,7 @@
 						<d2l-navigation-item-group item=[[item]]></d2l-navigation-item-group>
 					</template>
 					<template is="dom-if" if="[[isNavItem(item)]]">
-						<d2l-navigation-item-link item="[[item]]" tab-index="[[tabIndexVal]]"></d2l-navigation-item-link>
+						<d2l-navigation-item-link item="[[item]]"></d2l-navigation-item-link>
 					</template>
 				</template>
 				<d2l-navigation-more-group items="[[items]]" aria-hidden="true"></d2l-navigation-more-group>
@@ -132,7 +132,7 @@
 		_showAllItems: function() {
 			this._navItems.forEach(function(navItem) {
 				Polymer.dom(navItem).node.removeAttribute('hide');
-			}.bind(this));
+			});
 		},
 		_hideItem: function(navItem) {
 			if (navItem.isFocused()) {
