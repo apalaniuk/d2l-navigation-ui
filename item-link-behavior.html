@@ -9,6 +9,18 @@
 
 /** @polymerBehavior D2L.PolymerBehaviors.Navigation.ItemLinkBehavior */
 	var ItemLinkBehavior = {
+		properties: {
+			hide: {
+				type: Boolean,
+				value: false,
+				reflectToAttribute: true
+			},
+			tabIndex: {
+				type: Number,
+				computed: '_computeTabIndex(hide)'
+			}
+		},
+
 		createMenuItem: function(item) {
 			if (this.isLink(item)) {
 				return this._createLink(item);
@@ -186,8 +198,11 @@
 				this._onActionSelect(item);
 			}
 			return true;
-		}
+		},
 
+		_computeTabIndex: function(hide) {
+			return (hide ? -1 : 0);
+		}
 	};
 
 	window.D2L = window.D2L || {};

@@ -47,7 +47,7 @@
 						<d2l-navigation-item-link item="[[item]]"></d2l-navigation-item-link>
 					</template>
 				</template>
-				<d2l-navigation-more-group items="[[items]]"></d2l-navigation-more-group>
+				<d2l-navigation-more-group items="[[items]]" aria-hidden="true"></d2l-navigation-more-group>
 			</div>
 		</d2l-navigation-centerer>
 	</template>
@@ -132,14 +132,14 @@
 		},
 		_showAllItems: function() {
 			this._navItems.forEach(function(navItem) {
-				Polymer.dom(navItem).node.style.display = 'inline-block';
+				Polymer.dom(navItem).node.removeAttribute('hide');
 			});
 		},
 		_hideItem: function(navItem) {
 			if (navItem.isFocused()) {
 				this._moreGroup.focus();
 			}
-			Polymer.dom(navItem).node.style.display = 'none';
+			Polymer.dom(navItem).node.setAttribute('hide', '');
 		},
 		_handleDomChange: function() {
 			if (!this.items.length) {
