@@ -55,6 +55,7 @@
 		_dropdown: null,
 		_opener: null,
 		_menu: null,
+		_isDirty: false,
 
 		attached: function() {
 			this._opener = this.$$('[is="d2l-navigation-button-highlight-icon"]');
@@ -63,8 +64,13 @@
 			this._dropdown = this.$$('d2l-dropdown');
 			this.listen(this._dropdown, 'd2l-dropdown-open', '_onOpen');
 			this.listen(this._dropdown, 'd2l-dropdown-close', '_onClose');
+			this.listen(this._dropdown, 'd2l-course-selector-item-pinned', '_onCourseSelectorItemPinned');
+			this.listen(this._dropdown, 'd2l-course-selector-item-unpinned', '_onCourseSelectorItemUnpinned');
 
 			this._menu = this.$$('d2l-navigation-course-menu');
+
+			D2L.PubSub.subscribe('d2l.enrollments.pinned', this._onEnrollmentMessage.bind(this));
+			D2L.PubSub.subscribe('d2l.enrollments.unpinned', this._onEnrollmentMessage.bind(this));
 		},
 
 		detached: function() {
@@ -83,21 +89,36 @@
 
 		_onClick: function() {
 
-			if (this._menu.loaded) {
+			if (!this._isDirty && this._menu.loaded) {
 
 				this._dropdown.toggleOpen();
 
 			} else {
 
 				var onLoad = function() {
+					this._isDirty = false;
 					this._menu.removeEventListener('d2l-navigation-course-menu-loaded', onLoad);
 					this._dropdown.toggleOpen();
 				}.bind(this);
 
 				this._menu.addEventListener('d2l-navigation-course-menu-loaded', onLoad);
-				this._menu.load();
+				this._menu.load(this._isDirty);
 			}
 
+		},
+
+		_onCourseSelectorItemPinned: function(e) {
+			console.log('Menu item pinned! Course ' + e.detail.orgId );
+			D2L.PubSub.publish('d2l.enrollments.pinned', e.detail.orgId);
+		},
+
+		_onCourseSelectorItemUnpinned: function(e) {
+			console.log('Menu item unpinned! Course ' + e.detail.orgId );
+			D2L.PubSub.publish('d2l.enrollments.unpinned', e.detail.orgId);
+		},
+
+		_onEnrollmentMessage: function(message) {
+			this._isDirty = true;
 		}
 
 	});

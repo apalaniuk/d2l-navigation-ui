@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../d2l-polymer-behaviors/d2l-id.html">
+<link rel="import" href="../d2l-polymer-behaviors/d2l-pubsub.html">
 <link rel="import" href="find-page-object-behavior.html">
 <link rel="import" href="graft-behavior.html">
 
@@ -11,15 +12,18 @@
 				line-height: 1.5rem;
 			}
 		</style>
-		<div class="d2l-navigation-course-menu-container"></div>
+		<div class="d2l-navigation-course-menu-container d2l-placeholder-inner"></div>
 	</template>
 </dom-module>
 <script>
 	Polymer({
 		is: 'd2l-navigation-course-menu',
 
+		_placeholderId: null,
+
 		listeners: {
-			'partial-render': '_onPartialRender'
+			'partial-render': '_onPartialRender',
+			'course-pinned': '_onCoursePinned'
 		},
 
 		behaviors: [
@@ -28,21 +32,24 @@
 		],
 
 		properties: {
-			loaded: Boolean
+			loaded: Boolean,
+			isDirty: Boolean
 		},
 
-		load: function() {
+		load: function(isDirty) {
 
-			if (this.loaded) {
+			if (!isDirty && this.loaded) {
 				return;
 			}
 
-			var placeholderId = D2L.Id.getUniqueId();
+			if(!this._placeholderId) {
+				this._placeholderId = D2L.Id.getUniqueId();
 
-			this.$$('.d2l-navigation-course-menu-container')
-				.setAttribute('id', placeholderId);
+				this.$$('.d2l-navigation-course-menu-container')
+					.setAttribute('id', this._placeholderId);
+			}
 
-			this.graft(placeholderId);
+			this.graft(this._placeholderId, isDirty);
 
 		},
 

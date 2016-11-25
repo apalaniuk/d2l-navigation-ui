@@ -13,9 +13,9 @@
 				value: false
 			}
 		},
-		graft: function(id) {
+		graft: function(id, forceGraft) {
 
-			if (this._partialled) {
+			if (!forceGraft && this._partialled) {
 				return;
 			}
 			this._partialled = true;
