@@ -8,8 +8,10 @@
 <dom-module id="d2l-navigation">
 	<style>
 		:host {
+			border-bottom: 4px solid #f4f5f6;
 			display: block;
 			min-width: 320px;
+			position: relative;
 		}
 		:host([suppressed]) {
 			display: none;
@@ -19,6 +21,17 @@
 		}
 		:host([loading]) d2l-navigation-resolved {
 			opacity: 0;
+		}
+		.d2l-nav-shadow {
+			background: -moz-linear-gradient(top,  rgba(249,250,251,1) 0%, rgba(249,250,251,0) 100%);
+			background: -webkit-linear-gradient(top,  rgba(249,250,251,1) 0%,rgba(249,250,251,0) 100%);
+			background: linear-gradient(to bottom,  rgba(249,250,251,1) 0%,rgba(249,250,251,0) 100%);
+			bottom: -150px;
+			height: 150px;
+			width: 100%;
+			pointer-events: none;
+			position: absolute;
+			z-index: -95;
 		}
 	</style>
 	<template>
@@ -52,6 +65,7 @@
 			org-unit-name="[[orgUnitName]]"
 			user-href="[[userHref]]"
 			personal-menu-location="[[personalMenuLocation]]"></d2l-navigation-resolved>
+		<div class="d2l-nav-shadow"></div>
 	</template>
 </dom-module>
 <script>
