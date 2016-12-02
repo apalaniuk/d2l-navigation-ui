@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>course tests</title>
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+		<script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+		<script src="../../../web-component-tester/browser.js"></script>
+		<link rel="import" href="../../header/course-menu.html">
+	</head>
+	<body>
+
+		<test-fixture id="typical">
+			<template>
+				<d2l-navigation-header-course-menu
+					org-unit-name="course name"
+					org-unit-home="/org/unit/home"></d2l-navigation-header-course-menu>
+			</template>
+		</test-fixture>
+
+		<script>
+			var courseMenu;
+
+			describe('course synchronization', function() {
+
+				beforeEach(function() {
+					D2L.PublishSubscribe.clearSubscriptions('d2l.enrollments.pinned');
+					courseMenu = fixture('typical');
+				});
+
+				it('should publish a course enrollment pin message when a pin/unpin event is received', function(done) {
+
+					var expectedPinMessage = {
+						sender: courseMenu,
+						eventName: 'course-pinned',
+						detail: {
+							orgUnitId: 12345
+						}
+					};
+
+					var pinMessageHandler = function(message) {
+						expect(message).to.deep.equal(expectedPinMessage);
+						done();
+					};
+
+					var courseSelectorPinEvent = new CustomEvent('d2l-course-selector-item-pinned', {
+						detail: {
+							orgUnitId: 12345
+						}
+					});
+
+					D2L.PublishSubscribe.subscribe('d2l.enrollments.pinned', pinMessageHandler);
+
+					courseMenu._dropdown.dispatchEvent(courseSelectorPinEvent);
+
+				});
+
+				it('should reload the course menu on next open if menu previously loaded and pin/unpin message received', function() {
+
+					var clock = sinon.useFakeTimers();
+					courseMenu._menu.load = sinon.stub();
+
+					expect(courseMenu._isDirty)
+						.to.be.false;
+
+					courseMenu._menu.loaded = true;
+
+					D2L.PublishSubscribe.publish(
+						'd2l.enrollments.pinned', {
+							sender: null,
+							eventName: 'course-pinned',
+							detail: {
+								orgUnitId: 12345
+							}
+						});
+
+					clock.tick(10);
+
+					courseMenu._onClick(); // Calling directly rather than using .click() to avoid auto-close logic
+
+					expect(courseMenu._menu.load.calledWith(true))
+						.to.be.true;
+
+				});
+
+			});
+
+		</script>
+	</body>
+</html>

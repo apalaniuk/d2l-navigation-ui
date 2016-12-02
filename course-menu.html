@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../d2l-polymer-behaviors/d2l-id.html">
-<link rel="import" href="../d2l-polymer-behaviors/d2l-pubsub.html">
+<link rel="import" href="../d2l-polymer-behaviors/d2l-publish-subscribe.html">
 <link rel="import" href="find-page-object-behavior.html">
 <link rel="import" href="graft-behavior.html">
 
@@ -22,8 +22,7 @@
 		_placeholderId: null,
 
 		listeners: {
-			'partial-render': '_onPartialRender',
-			'course-pinned': '_onCoursePinned'
+			'partial-render': '_onPartialRender'
 		},
 
 		behaviors: [
@@ -42,7 +41,7 @@
 				return;
 			}
 
-			if(!this._placeholderId) {
+			if (!this._placeholderId) {
 				this._placeholderId = D2L.Id.getUniqueId();
 
 				this.$$('.d2l-navigation-course-menu-container')

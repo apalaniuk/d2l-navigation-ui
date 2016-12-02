@@ -2,6 +2,7 @@
 <link rel="import" href="../../d2l-dropdown/d2l-dropdown.html">
 <link rel="import" href="../../d2l-dropdown/d2l-dropdown-content.html">
 <link rel="import" href="../../d2l-icons/d2l-icons.html">
+<link rel="import" href="../../d2l-polymer-behaviors/d2l-publish-subscribe.html">
 <link rel="import" href="../button-highlight-icon.html">
 <link rel="import" href="../course-menu.html">
 <link rel="import" href="../divider.html">
@@ -57,6 +58,10 @@
 		_menu: null,
 		_isDirty: false,
 
+		ready: function() {
+			this._onEnrollmentMessage = this._onEnrollmentMessage.bind(this);
+		},
+
 		attached: function() {
 			this._opener = this.$$('[is="d2l-navigation-button-highlight-icon"]');
 			this.listen(this._opener, 'click', '_onClick');
@@ -69,8 +74,7 @@
 
 			this._menu = this.$$('d2l-navigation-course-menu');
 
-			D2L.PubSub.subscribe('d2l.enrollments.pinned', this._onEnrollmentMessage.bind(this));
-			D2L.PubSub.subscribe('d2l.enrollments.unpinned', this._onEnrollmentMessage.bind(this));
+			D2L.PublishSubscribe.subscribe('d2l.enrollments.pinned', this._onEnrollmentMessage);
 		},
 
 		detached: function() {
@@ -103,22 +107,43 @@
 
 				this._menu.addEventListener('d2l-navigation-course-menu-loaded', onLoad);
 				this._menu.load(this._isDirty);
+
 			}
 
 		},
 
 		_onCourseSelectorItemPinned: function(e) {
-			console.log('Menu item pinned! Course ' + e.detail.orgId );
-			D2L.PubSub.publish('d2l.enrollments.pinned', e.detail.orgId);
+
+			D2L.PublishSubscribe.publish(
+				'd2l.enrollments.pinned', {
+					sender: this,
+					eventName: 'course-pinned',
+					detail: {
+						orgUnitId: e.detail.orgUnitId
+					}
+				});
+
 		},
 
 		_onCourseSelectorItemUnpinned: function(e) {
-			console.log('Menu item unpinned! Course ' + e.detail.orgId );
-			D2L.PubSub.publish('d2l.enrollments.unpinned', e.detail.orgId);
+
+			D2L.PublishSubscribe.publish(
+				'd2l.enrollments.pinned', {
+					sender: this,
+					eventName: 'course-unpinned',
+					detail: {
+						orgUnitId: e.detail.orgUnitId
+					}
+				});
+
 		},
 
 		_onEnrollmentMessage: function(message) {
-			this._isDirty = true;
+
+			if (message.sender !== this) {
+				this._isDirty = true;
+			}
+
 		}
 
 	});
